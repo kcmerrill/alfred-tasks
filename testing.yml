@@ -47,6 +47,7 @@ tdd:
     command: |
         {{ index .Args 1 }}
     every: 2s
+    interactive: true
     
 tdd.go:
     summary: Watch .go files and run test.go
