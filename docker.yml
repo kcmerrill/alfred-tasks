@@ -26,3 +26,15 @@ clean:
         docker volume ls -qf dangling=true | xargs docker volume rm
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /etc:/etc spotify/docker-gc
         
+clean:
+    summary: Stop + Start your docker containers
+    tasks: >
+        kill({{ index .Args 0 }})
+        rm({{ index .Args 0 }})
+
+kill.all:
+    summary: Kill all running docker containers
+    for:
+        args: |
+            docker ps --format "table {{ "{{" }}.ID{{ "}}" }}" | grep -v CONTAINER
+        tasks: kill remove
