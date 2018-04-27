@@ -18,19 +18,23 @@ exec:
 
 pull:
     command: docker pull {{ index .Args 0 }}
-
-clean:
-    summary: Clean up docker volumes and unused images/containers
-    command: |
-        docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs docker rm
-        docker volume ls -qf dangling=true | xargs docker volume rm
-        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /etc:/etc spotify/docker-gc
         
-clean:
+clean: &docker_clean
     summary: Stop + Start your docker containers
     tasks: >
         kill({{ index .Args 0 }})
         rm({{ index .Args 0 }})
+
+reset:
+    <<: *docker_clean
+    
+prune:
+    summary: Docker prune <time.Duration>
+    command: |
+        docker system prune -a -f --filter "until={{ index .Args 0 }}"
+    defaults: 5h
+    exit: 1
+        
 
 kill.all:
     summary: Kill all running docker containers
