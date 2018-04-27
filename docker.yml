@@ -32,7 +32,8 @@ prune:
     summary: Docker prune <time.Duration>
     command: |
         docker system prune -a -f --filter "until={{ index .Args 0 }}"
-    defaults: 5h
+    defaults: 
+        - 5h
     exit: 1
         
 
