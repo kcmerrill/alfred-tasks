@@ -21,7 +21,7 @@ pull:
         
 clean: &docker_clean
     summary: Stop + Start your docker containers
-    tasks: >
+    tasks: |
         kill({{ index .Args 0 }})
         remove({{ index .Args 0 }})
 
