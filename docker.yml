@@ -23,7 +23,7 @@ clean: &docker_clean
     summary: Stop + Start your docker containers
     tasks: >
         kill({{ index .Args 0 }})
-        rm({{ index .Args 0 }})
+        remove({{ index .Args 0 }})
 
 reset:
     <<: *docker_clean
